@@ -5,6 +5,7 @@ char	*get_first_line(char *file)
 	int		i;
 	char	*res;
 
+	i = 0;
 	while (file[i] != '\n' && file[i] != '\0')
 		i++;
 	res = malloc(i + 2);
@@ -43,7 +44,7 @@ char	*reading_buff(int fd)
 
 	buffer = (char *)malloc(BUFFER_SIZE + 1);
 	sz = read(fd, buffer, BUFFER_SIZE);
-	buffer[sz + 1];
+	buffer[sz + 1] = '\0';
 	return (buffer);
 }
 
@@ -52,8 +53,15 @@ char	*get_next_line(int fd)
 	static char	*line;
 	static char	*buffer;
 
+	if (fd < 0 || BUFFER_SIZE <= 0)
+		return (NULL);
 	if (!line)
 		buffer = reading_buff(fd);
 	line = ft_get_next_line(buffer, line);
+	if (!line || line[0] == '\n')
+	{
+		free(buffer);
+		return (0);
+	}
 	return (line);
 }

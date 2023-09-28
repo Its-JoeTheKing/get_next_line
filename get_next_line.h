@@ -4,9 +4,12 @@
 # include "unistd.h"
 # include "fcntl.h"
 # include "stdio.h"
-# define BUFFER_SIZE 1000
 
 int		ft_strlen(char *str);
 char	*ft_strstr(char *str, char *to_find);
+char	*get_first_line(char *file);
+char	*ft_get_next_line(char *file, char *line);
+char	*reading_buff(int fd);
+char	*get_next_line(int fd);
 
 #endif
