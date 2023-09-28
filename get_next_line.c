@@ -1,36 +1,59 @@
 #include "get_next_line.h"
 
-char	*get_next_line(int fd)
+char	*get_first_line(char *file)
 {
-	static int	i;
-	char	*c;
+	int		i;
 	char	*res;
-	if (i == 0)
+
+	while (file[i] != '\n' && file[i] != '\0')
+		i++;
+	res = malloc(i + 2);
+	i = 0;
+	while (file[i] != '\n' && file[i] != '\0')
 	{
-		c = malloc(BUFFER_SIZE + 1);
-		if (!c)
-			return (0);
-		int size = read(fd, c, BUFFER_SIZE);
-		if (size == 0)
-		{
-			free(c);
-			return (0);
-		}
-		c[size] = '\0';
+		res[i] = file[i];
+		i++;
 	}
-	res = fta_get_next_line(c, &i);
-	if (res == NULL)
-		free(c);
-	return res;
+	res[i] = '\n';
+	res[i + 1] = '\0';
+	return (res);
 }
 
-int main()
+char	*ft_get_next_line(char *file, char *line)
 {
-	int fd = open("test.txt", O_RDONLY);
-	char *line;
-	int i = 0;
-	while ((line = get_next_line(fd)) != NULL) {
-		printf("%s", line);
-		free(line);
+	char	*res;
+	char	*temp;
+
+	if (!line)
+	{
+		res = get_first_line(file);
+		return (res);
 	}
+	if (!ft_strstr(file, line))
+		return (0);
+	temp = ft_strstr(file, line);
+	res = get_first_line(temp);
+	return (res);
+}
+
+char	*reading_buff(int fd)
+{
+	char	*buffer;
+	int		sz;
+
+	buffer = (char *)malloc(BUFFER_SIZE + 1);
+	sz = read(fd, buffer, BUFFER_SIZE);
+	buffer[sz + 1];
+	return (buffer);
+}
+
+char	*get_next_line(int fd)
+{
+	static char	*line;
+	static char	*buffer;
+
+	if (!line)
+		buffer = reading_buff(fd);
+	line = ft_get_next_line(buffer, line);
+	return (line);
 }

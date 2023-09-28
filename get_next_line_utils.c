@@ -10,39 +10,26 @@ int	ft_strlen(char *str)
 	return (i);
 }
 
-int	next_line_len(int i, char *str)
+char	*ft_strstr(char *str, char *to_find)
 {
-	int	count;
+	int	i;
+	int	j;
+	int	len;
 
-	count = 0;
-	while (str[i] && str[i] != '\n')
+	i = 0;
+	j = 0;
+	len = ft_strlen(to_find);
+	if (!to_find)
+		return (str);
+	while (str[i] && j != len)
 	{
+		if (str[i] == to_find[j])
+			j++;
+		else
+			j = 0;
 		i++;
-		count++;
 	}
-	return (count);
-}
-
-char	*fta_get_next_line(char *str, int *i)
-{
-	char	*res;
-	int		line_ln;
-	int		k;
-	int		j = *i;
-
-	k = 0;
-	if (str[j] == '\0')
-		return (0);
-	line_ln = next_line_len(j, str);
-	res = (char *)malloc(line_ln + 1);
-	if (!res)
-		return (0);
-	while (str[j] && str[j] != '\n')
-	{
-		res[k++] = str[j];
-		j++;
-	}
-	res[k] = '\0';
-	*i = j+1;
-	return (res);
+	if (j == len)
+		return (str + i);
+	return (0);
 }
